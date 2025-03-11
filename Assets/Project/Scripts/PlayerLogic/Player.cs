@@ -11,6 +11,8 @@ public class Player : MonoBehaviour
 {
     private Planer _planer;
     private PlaneWalker _walker;
+    
+    private Camera _camera;
 
     [SerializeField] private GameObject WIN_Icon;
 
@@ -18,13 +20,28 @@ public class Player : MonoBehaviour
     {
         _planer = GetComponent<Planer>();
         _walker = GetComponent<PlaneWalker>();
+        
+        _camera = Camera.main;
     }
 
     void Update()
     {
         if (_planer.Plane != ' ' && _planer.PlaneVector != ' ') _walker.SetPlane(_planer.Plane, _planer.PlaneVector);
-        if (_planer.DirPlane != ' ' && _planer.DirVector != ' ') _walker.SetDirection(_planer.DirPlane, _planer.DirVector);
-        if (_planer.LinePlane != ' ' && _planer.LineVector != ' ') _walker.SetLine(_planer.LinePlane, _planer.LineVector);
+        if (_planer.DirPlane != ' ' && _planer.DirVector != ' ')
+            _walker.SetDirection(_planer.DirPlane, _planer.DirVector);
+        if (_planer.LinePlane != ' ' && _planer.LineVector != ' ')
+            _walker.SetLine(_planer.LinePlane, _planer.LineVector);
+
+        RaycastHit HallHit;
+        Ray HallRay = _camera.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(HallRay, out HallHit))
+        {
+            if (HallHit.transform.tag == "WhiteBox")
+            {
+                
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
