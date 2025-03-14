@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     private PlaneWalker _walker;
     
     private Camera _camera;
+    [SerializeField] private Transform _delBox;
 
     [SerializeField] private GameObject WIN_Icon;
 
@@ -33,13 +34,18 @@ public class Player : MonoBehaviour
             _walker.SetLine(_planer.LinePlane, _planer.LineVector);
 
         RaycastHit HallHit;
-        Ray HallRay = _camera.ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(HallRay, out HallHit))
+        Vector3 fwd = transform.TransformDirection(Vector3.down);
+        
+        if (Physics.Raycast(_camera.transform.position, fwd, out HallHit, 2.47f))
         {
-            if (HallHit.transform.tag == "WhiteBox")
-            {
-                
+            Debug.DrawRay(_camera.transform.position, fwd * 2.47f, Color.green);
+            
+            if(HallHit.collider.gameObject.tag == "Player" && _delBox != null) { _delBox.gameObject.SetActive(true); _delBox = null; }
+            else if(HallHit.collider.gameObject.tag == "WhiteBox")
+            { 
+                if(_delBox != null && _delBox != HallHit.transform) _delBox.gameObject.SetActive(true);
+                _delBox = HallHit.collider.gameObject.transform;
+                _delBox.gameObject.SetActive(false);
             }
         }
     }

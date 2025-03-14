@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class PlaneWalker : MonoBehaviour
@@ -18,7 +19,7 @@ public class PlaneWalker : MonoBehaviour
 
     [SerializeField] private float rotX = -90, rotY = 0, rotZ = 0;
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private float coolDown = 0.1f;
+    [SerializeField] private float coolDown = 1f;
     public float Cooldown => coolDown;
 
     void Start()
@@ -76,7 +77,7 @@ public class PlaneWalker : MonoBehaviour
     {
         if (collision.collider.tag == "ToXZ" && coolDown <= 0)
         {
-            coolDown = 0.1f;
+            coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("txz", 'W');
             if (Input.GetKey(KeyCode.A)) DefinePlane("txz", 'A');
@@ -100,22 +101,22 @@ public class PlaneWalker : MonoBehaviour
                         collision.transform.position.z + 0.2f);
             }
             PlayerRotate();
-            transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);    
+            //StartCoroutine(StepToPlane());
         }
         else if (collision.collider.tag == "FromXZ" && coolDown <= 0)
         {
-            coolDown = 0.1f;
+            coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("fxz", 'W');
             if (Input.GetKey(KeyCode.A)) DefinePlane("fxz", 'A');
             if (Input.GetKey(KeyCode.S)) DefinePlane("fxz", 'S');
             if (Input.GetKey(KeyCode.D)) DefinePlane("fxz", 'D');
             PlayerRotate();
-            transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+            //StartCoroutine(StepToPlane());
         }
         else if (collision.collider.tag == "ToXY" && coolDown <= 0)
         {
-            coolDown = 0.1f;
+            coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("txy", 'W');
             if (Input.GetKey(KeyCode.A)) DefinePlane("txy", 'A');
@@ -139,22 +140,22 @@ public class PlaneWalker : MonoBehaviour
                         collision.transform.position.y + 0.2f, transform.position.z);
             }
             PlayerRotate();
-            transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+            //StartCoroutine(StepToPlane());
         }
         else if (collision.collider.tag == "FromXY" && coolDown <= 0)
         {
-            coolDown = 0.1f;
+            coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("fxy", 'W');
             if (Input.GetKey(KeyCode.A)) DefinePlane("fxy", 'A');
             if (Input.GetKey(KeyCode.S)) DefinePlane("fxy", 'S');
             if (Input.GetKey(KeyCode.D)) DefinePlane("fxy", 'D');
             PlayerRotate();
-            transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+            //StartCoroutine(StepToPlane());
         }
         else if (collision.collider.tag == "ToZY" && coolDown <= 0)
         {
-            coolDown = 0.1f;
+            coolDown = 1f;
 
             if (Input.GetKey(KeyCode.W)) DefinePlane("tzy", 'W');
             if (Input.GetKey(KeyCode.A)) DefinePlane("tzy", 'A');
@@ -178,26 +179,30 @@ public class PlaneWalker : MonoBehaviour
                         collision.transform.position.z);
             }
             PlayerRotate();
-            transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+            //StartCoroutine(StepToPlane());
         }
         else if (collision.collider.tag == "FromZY" && coolDown <= 0)
         {
-            coolDown = 0.1f;
-            
+            coolDown = 1f;
+
             if (Input.GetKey(KeyCode.W)) DefinePlane("fzy", 'W');
             if (Input.GetKey(KeyCode.A)) DefinePlane("fzy", 'A');
             if (Input.GetKey(KeyCode.S)) DefinePlane("fzy", 'S');
             if (Input.GetKey(KeyCode.D)) DefinePlane("fzy", 'D');
             PlayerRotate();
-            transform.rotation = Quaternion.Euler(rotX, rotY, rotZ);
+            //StartCoroutine(StepToPlane());
         }
+        transform.rotation = Quaternion.Euler(rotX, rotY, rotZ); 
     }
 
-    IEnumerator StepToPlane(char s)
+    IEnumerator StepToPlane()
     {
         while (true)
         {
+            transform.DORotate(new Vector3(rotX, rotY, rotZ), 0.1f);
             yield return new WaitForSeconds(0.1f);
+            Debug.Log(rotX + ", " + rotY + ", " + rotZ);
+            break;
         }
     }
 
@@ -219,31 +224,31 @@ public class PlaneWalker : MonoBehaviour
         }
         else if (nextVerHere == 'x' && nextVerDir == '+')
         {
-            if (nextStrHere == 'z' && nextStrDir == '+' && nextSideHere == 'y' && nextSideDir == '+') { rotX = 0; rotY = 0; rotZ = -90; }
-            else if (nextStrHere == 'z' && nextStrDir == '-' && nextSideHere == 'y' && nextSideDir == '-') { rotX = 180; rotY = 0; rotZ = -90; }
-            else if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'z' && nextSideDir == '-') { rotX = -90; rotY = 0; rotZ = -90; }
-            else if (nextStrHere == 'y' && nextStrDir == '-' && nextSideHere == 'z' && nextSideDir == '+') { rotX = 90; rotY = 0; rotZ = -90; }
+            if (nextStrHere == 'z' && nextStrDir == '+' && nextSideHere == 'y' && nextSideDir == '+') { rotX = 0; rotY = 0; rotZ = 270; }
+            else if (nextStrHere == 'z' && nextStrDir == '-' && nextSideHere == 'y' && nextSideDir == '-') { rotX = 180; rotY = 0; rotZ = 270; }
+            else if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'z' && nextSideDir == '-') { rotX = 270; rotY = 0; rotZ = 270; }
+            else if (nextStrHere == 'y' && nextStrDir == '-' && nextSideHere == 'z' && nextSideDir == '+') { rotX = 90; rotY = 0; rotZ = 270; }
         }
         else if (nextVerHere == 'x' && nextVerDir == '-')
         {
-            if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'z' && nextSideDir == '+') { rotX = -90; rotY = 0; rotZ = 90; }
+            if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'z' && nextSideDir == '+') { rotX = 270; rotY = 0; rotZ = 90; }
             else if (nextStrHere == 'y' && nextStrDir == '-' && nextSideHere == 'z' && nextSideDir == '-') { rotX = 90; rotY = 0; rotZ = 90; }
             else if (nextStrHere == 'z' && nextStrDir == '+' && nextSideHere == 'y' && nextSideDir == '-') { rotX = 0; rotY = 0; rotZ = 90; }
             else if (nextStrHere == 'z' && nextStrDir == '-' && nextSideHere == 'y' && nextSideDir == '+') { rotX = 180; rotY = 0; rotZ = 90; }
         }
         else if (nextVerHere == 'z' && nextVerDir == '+')
         {
-            if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'x' && nextSideDir == '+') { rotX = -90; rotY = 90; rotZ = 90; } 
+            if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'x' && nextSideDir == '+') { rotX = 270; rotY = 90; rotZ = 90; } 
             else if (nextStrHere == 'y' && nextStrDir == '-' && nextSideHere == 'x' && nextSideDir == '-') { rotX = 90; rotY = 90; rotZ = 90; } 
             else if (nextStrHere == 'x' && nextStrDir == '+' && nextSideHere == 'y' && nextSideDir == '-') { rotX = 0; rotY = 90; rotZ = 90; }
             else if (nextStrHere == 'x' && nextStrDir == '-' && nextSideHere == 'y' && nextSideDir == '+') { rotX = 180; rotY = 90; rotZ = 90; }  
         }
         else if (nextVerHere == 'z' && nextVerDir == '-')
         {
-            if (nextStrHere == 'x' && nextStrDir == '+' && nextSideHere == 'y' && nextSideDir == '+') { rotX = 180; rotY = -90; rotZ = 90; }
-            else if (nextStrHere == 'x' && nextStrDir == '-' && nextSideHere == 'y' && nextSideDir == '-') { rotX = 0; rotY = -90; rotZ = 90; }
-            else if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'x' && nextSideDir == '-') { rotX = -90; rotY = -90; rotZ = 90; } 
-            else if (nextStrHere == 'y' && nextStrDir == '-' && nextSideHere == 'x' && nextSideDir == '+') { rotX = 90; rotY = -90; rotZ = 90; } 
+            if (nextStrHere == 'x' && nextStrDir == '+' && nextSideHere == 'y' && nextSideDir == '+') { rotX = 180; rotY = 270; rotZ = 90; }
+            else if (nextStrHere == 'x' && nextStrDir == '-' && nextSideHere == 'y' && nextSideDir == '-') { rotX = 0; rotY = 270; rotZ = 90; }
+            else if (nextStrHere == 'y' && nextStrDir == '+' && nextSideHere == 'x' && nextSideDir == '-') { rotX = 270; rotY = 270; rotZ = 90; } 
+            else if (nextStrHere == 'y' && nextStrDir == '-' && nextSideHere == 'x' && nextSideDir == '+') { rotX = 90; rotY = 270; rotZ = 90; } 
         }
     }
     private void DefinePlane(string col, char s)
