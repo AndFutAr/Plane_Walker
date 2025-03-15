@@ -13,9 +13,11 @@ public class Player : MonoBehaviour
     private PlaneWalker _walker;
     
     private Camera _camera;
+    [SerializeField] private Transform _room;
+    
     [SerializeField] private Transform _delBox;
 
-    [SerializeField] private GameObject WIN_Icon;
+    [SerializeField] private GameObject WIN_Icon, OverMenu;
 
     void Start()
     {
@@ -38,8 +40,7 @@ public class Player : MonoBehaviour
         
         if (Physics.Raycast(_camera.transform.position, fwd, out HallHit, 2.47f))
         {
-            Debug.DrawRay(_camera.transform.position, fwd * 2.47f, Color.green);
-            
+            Debug.DrawLine(_camera.transform.position, HallHit.point, Color.red);
             if(HallHit.collider.gameObject.tag == "Player" && _delBox != null) { _delBox.gameObject.SetActive(true); _delBox = null; }
             else if(HallHit.collider.gameObject.tag == "WhiteBox")
             { 
@@ -53,8 +54,15 @@ public class Player : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "Finish") StartCoroutine(Finish());
+        if (collision.collider.tag == "BlackBox") GameOver();
     }
 
+    public void GameOver()
+    {
+        _camera.transform.SetParent(_room);
+        gameObject.SetActive(false);
+        OverMenu.SetActive(true);
+    }
     IEnumerator Finish()
     {
         yield return new WaitForSeconds(0.3f);

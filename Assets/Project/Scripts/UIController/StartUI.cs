@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class StartUI : MonoBehaviour
@@ -11,6 +11,9 @@ public class StartUI : MonoBehaviour
 
     [SerializeField] private Transform plObject;
     [SerializeField] private Transform setBox, backBox;
+
+    [SerializeField] private AudioSource _phonSound;
+    [SerializeField] private GameObject _soundHandler;
 
     void Start() => _cam = Camera.main;
 
@@ -73,8 +76,14 @@ public class StartUI : MonoBehaviour
                         StartCoroutine(QuitGame());
                     }
                 }
+
+                if (HallHit.transform.tag == "Slider")
+                {
+                    _soundHandler.transform.position = HallHit.transform.position;
+                }
             }
         }
+        _phonSound.volume = _soundHandler.transform.localPosition.x + 1;
     }
 
     IEnumerator StartGame()

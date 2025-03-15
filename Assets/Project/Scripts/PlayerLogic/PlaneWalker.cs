@@ -80,9 +80,9 @@ public class PlaneWalker : MonoBehaviour
             coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("txz", 'W');
-            if (Input.GetKey(KeyCode.A)) DefinePlane("txz", 'A');
-            if (Input.GetKey(KeyCode.S)) DefinePlane("txz", 'S');
-            if (Input.GetKey(KeyCode.D)) DefinePlane("txz", 'D');
+            else if (Input.GetKey(KeyCode.A)) DefinePlane("txz", 'A');
+            else if (Input.GetKey(KeyCode.S)) DefinePlane("txz", 'S');
+            else if (Input.GetKey(KeyCode.D)) DefinePlane("txz", 'D');
             
             if (((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && SideHere == 'y') ||
                 ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) && StrHere == 'y'))
@@ -101,16 +101,16 @@ public class PlaneWalker : MonoBehaviour
                         collision.transform.position.z + 0.2f);
             }
             PlayerRotate();
-            //StartCoroutine(StepToPlane());
+            //  StartCoroutine(StepToPlane());
         }
         else if (collision.collider.tag == "FromXZ" && coolDown <= 0)
         {
             coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("fxz", 'W');
-            if (Input.GetKey(KeyCode.A)) DefinePlane("fxz", 'A');
-            if (Input.GetKey(KeyCode.S)) DefinePlane("fxz", 'S');
-            if (Input.GetKey(KeyCode.D)) DefinePlane("fxz", 'D');
+            else if (Input.GetKey(KeyCode.A)) DefinePlane("fxz", 'A');
+            else if (Input.GetKey(KeyCode.S)) DefinePlane("fxz", 'S');
+            else if (Input.GetKey(KeyCode.D)) DefinePlane("fxz", 'D');
             PlayerRotate();
             //StartCoroutine(StepToPlane());
         }
@@ -119,9 +119,9 @@ public class PlaneWalker : MonoBehaviour
             coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("txy", 'W');
-            if (Input.GetKey(KeyCode.A)) DefinePlane("txy", 'A');
-            if (Input.GetKey(KeyCode.S)) DefinePlane("txy", 'S');
-            if (Input.GetKey(KeyCode.D)) DefinePlane("txy", 'D');
+            else if (Input.GetKey(KeyCode.A)) DefinePlane("txy", 'A');
+            else if (Input.GetKey(KeyCode.S)) DefinePlane("txy", 'S');
+            else if (Input.GetKey(KeyCode.D)) DefinePlane("txy", 'D');
             
             if (((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && SideHere == 'z') ||
                 ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) && StrHere == 'z'))
@@ -147,9 +147,9 @@ public class PlaneWalker : MonoBehaviour
             coolDown = 1f;
             
             if (Input.GetKey(KeyCode.W)) DefinePlane("fxy", 'W');
-            if (Input.GetKey(KeyCode.A)) DefinePlane("fxy", 'A');
-            if (Input.GetKey(KeyCode.S)) DefinePlane("fxy", 'S');
-            if (Input.GetKey(KeyCode.D)) DefinePlane("fxy", 'D');
+            else if (Input.GetKey(KeyCode.A)) DefinePlane("fxy", 'A');
+            else if (Input.GetKey(KeyCode.S)) DefinePlane("fxy", 'S');
+            else if (Input.GetKey(KeyCode.D)) DefinePlane("fxy", 'D');
             PlayerRotate();
             //StartCoroutine(StepToPlane());
         }
@@ -158,9 +158,9 @@ public class PlaneWalker : MonoBehaviour
             coolDown = 1f;
 
             if (Input.GetKey(KeyCode.W)) DefinePlane("tzy", 'W');
-            if (Input.GetKey(KeyCode.A)) DefinePlane("tzy", 'A');
-            if (Input.GetKey(KeyCode.S)) DefinePlane("tzy", 'S');
-            if (Input.GetKey(KeyCode.D)) DefinePlane("tzy", 'D');
+            else if (Input.GetKey(KeyCode.A)) DefinePlane("tzy", 'A');
+            else if (Input.GetKey(KeyCode.S)) DefinePlane("tzy", 'S');
+            else if (Input.GetKey(KeyCode.D)) DefinePlane("tzy", 'D');
 
             if (((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.S)) && SideHere == 'x') ||
                 ((Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)) && StrHere == 'x'))
@@ -186,9 +186,9 @@ public class PlaneWalker : MonoBehaviour
             coolDown = 1f;
 
             if (Input.GetKey(KeyCode.W)) DefinePlane("fzy", 'W');
-            if (Input.GetKey(KeyCode.A)) DefinePlane("fzy", 'A');
-            if (Input.GetKey(KeyCode.S)) DefinePlane("fzy", 'S');
-            if (Input.GetKey(KeyCode.D)) DefinePlane("fzy", 'D');
+            else if (Input.GetKey(KeyCode.A)) DefinePlane("fzy", 'A');
+            else if (Input.GetKey(KeyCode.S)) DefinePlane("fzy", 'S');
+            else if (Input.GetKey(KeyCode.D)) DefinePlane("fzy", 'D');
             PlayerRotate();
             //StartCoroutine(StepToPlane());
         }

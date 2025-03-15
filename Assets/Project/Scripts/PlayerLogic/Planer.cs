@@ -12,6 +12,8 @@ public class Planer : MonoBehaviour
     private char dirPlane = ' ', dirVector = ' ';
     private char linePlane = ' ', lineVector = ' ';
     
+    [SerializeField] private Transform[] Checker;
+    
     public char Plane => plane;
     public char PlaneVector => planeVector;
     public char DirPlane => dirPlane;
@@ -54,6 +56,39 @@ public class Planer : MonoBehaviour
         if (lineY > 0.15) { linePlane = 'y'; lineVector = '+';}
         else if (lineY < -0.15) { linePlane = 'y'; lineVector = '-'; }
         if (lineZ > 0.15) { linePlane = 'z'; lineVector = '+'; }
-        else if (lineZ < -0.15) { linePlane = 'z'; lineVector = '-'; }
+        else if (lineZ < -0.15) { linePlane = 'z'; lineVector = '-'; } 
+    }
+
+    public int DropRaycast()
+    {
+        char dir = '-';
+        if(Input.GetKey(KeyCode.W)) dir = 'W';
+        else if(Input.GetKey(KeyCode.A)) dir = 'A';
+        else if(Input.GetKey(KeyCode.S)) dir = 'S';
+        else if(Input.GetKey(KeyCode.D)) dir = 'D';
+
+        if (dir == 'W' || dir == 'A' || dir == 'S' || dir == 'D')
+        {
+            RaycastHit HallHit;
+            Vector3 fwd = transform.TransformDirection(Vector3.forward);
+            Vector3 dwn = transform.TransformDirection(Vector3.down);
+            switch (dir)
+            {
+                case 'W': fwd = transform.TransformDirection(Vector3.forward); dwn = Checker[0].transform.TransformDirection(Vector3.forward); break;
+                case 'A': fwd = transform.TransformDirection(Vector3.left); dwn = Checker[1].transform.TransformDirection(Vector3.forward); break;
+                case 'S': fwd = transform.TransformDirection(Vector3.back); dwn = Checker[2].transform.TransformDirection(Vector3.forward); break;
+                case 'D': fwd = transform.TransformDirection(Vector3.right); dwn = Checker[3].transform.TransformDirection(Vector3.forward); break;
+            }
+
+            if (Physics.Raycast(transform.position, fwd, out HallHit, 0.2f))
+            {
+                if(HallHit.transform.tag == "WhiteBox") return 1;
+            }
+            else if (Physics.Raycast(transform.position, dwn, out HallHit, 0.2f))
+            {
+                if(HallHit.transform.tag == "WhiteBox") return -1;
+            }
+        }
+        return 0;
     }
 }
