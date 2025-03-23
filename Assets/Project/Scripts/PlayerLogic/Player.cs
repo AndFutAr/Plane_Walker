@@ -1,62 +1,62 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
     private Planer _planer;
     private PlaneWalker _walker;
-    
     private Camera _camera;
-    [SerializeField] private Transform _room;
-    
-    [SerializeField] private Transform _delBox;
+    [SerializeField] private float shield;
 
+    [SerializeField] private GameObject[] _boxes;
+    [SerializeField] private Transform[] _rayFromCamera;
+    
+    [SerializeField] private Transform _room;
     [SerializeField] private GameObject WIN_Icon, OverMenu;
 
     void Start()
     {
         _planer = GetComponent<Planer>();
         _walker = GetComponent<PlaneWalker>();
-        
         _camera = Camera.main;
+        
+        _boxes = GameObject.FindGameObjectsWithTag("WhiteBox");
     }
 
     void Update()
     {
-        if (_planer.Plane != ' ' && _planer.PlaneVector != ' ') _walker.SetPlane(_planer.Plane, _planer.PlaneVector);
-        if (_planer.DirPlane != ' ' && _planer.DirVector != ' ')
-            _walker.SetDirection(_planer.DirPlane, _planer.DirVector);
-        if (_planer.LinePlane != ' ' && _planer.LineVector != ' ')
-            _walker.SetLine(_planer.LinePlane, _planer.LineVector);
+        if(!_walker.IsUsed()) _walker.CheckWay(_planer.DropRaycast());
 
-        RaycastHit HallHit;
-        Vector3 fwd = transform.TransformDirection(Vector3.down);
-        
-        if (Physics.Raycast(_camera.transform.position, fwd, out HallHit, 2.47f))
+        RaycastHit[] Hits;
+        Hits = Physics.RaycastAll(_camera.transform.position, _camera.transform.forward, 2.47f);
+        for (int i = 0; i < _boxes.Length; i++)
         {
-            Debug.DrawLine(_camera.transform.position, HallHit.point, Color.red);
-            if(HallHit.collider.gameObject.tag == "Player" && _delBox != null) { _delBox.gameObject.SetActive(true); _delBox = null; }
-            else if(HallHit.collider.gameObject.tag == "WhiteBox")
-            { 
-                if(_delBox != null && _delBox != HallHit.transform) _delBox.gameObject.SetActive(true);
-                _delBox = HallHit.collider.gameObject.transform;
-                _delBox.gameObject.SetActive(false);
+            bool isAvai = true;
+            for (int j = 0; j < Hits.Length; j++)
+            {
+                if (_boxes[i] == Hits[j].collider.gameObject && Hits[j].collider.tag == "WhiteBox") isAvai = false;
+            }
+
+            RaycastHit HallHit;
+            if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out HallHit, 2.47f))
+            {
+                if (isAvai && HallHit.transform != _boxes[i].transform.parent) _boxes[i].SetActive(true);
+                else _boxes[i].SetActive(false);
             }
         }
+
+        if (shield > 0) shield -= Time.deltaTime;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.collider.tag == "Finish") StartCoroutine(Finish());
-        if (collision.collider.tag == "BlackBox") GameOver();
+        if (collision.collider.tag == "BlackBox" && shield <= 0) GameOver();
     }
 
+    public void OnShield() => shield = 1;
     public void GameOver()
     {
         _camera.transform.SetParent(_room);
@@ -65,14 +65,13 @@ public class Player : MonoBehaviour
     }
     IEnumerator Finish()
     {
-        yield return new WaitForSeconds(0.3f);
         WIN_Icon.SetActive(true);
         WIN_Icon.transform.localScale = new Vector3(0, 0, 0);
         yield return new WaitForSeconds(0.1f);
         WIN_Icon.transform.DOScale(new Vector3(8, 8, 8), 0.1f);
-        yield return new WaitForSeconds(0.5f);
-        WIN_Icon.transform.DOScale(new Vector3(0, 0, 0), 0.5f);
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.3f);
+        WIN_Icon.transform.DOScale(new Vector3(0, 0, 0), 0.3f);
+        yield return new WaitForSeconds(0.2f);
         WIN_Icon.SetActive(false);
         SceneManager.LoadScene("StartScene");
     }

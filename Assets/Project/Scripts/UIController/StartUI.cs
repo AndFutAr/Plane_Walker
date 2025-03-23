@@ -1,7 +1,6 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class StartUI : MonoBehaviour
@@ -60,6 +59,8 @@ public class StartUI : MonoBehaviour
                         StartCoroutine(BackToMenu());
                     }
                 }
+                if(HallHit.transform.tag == "LastLevel") if (!isUsed) { isUsed = true; StartCoroutine(LastLevel()); }
+                if(HallHit.transform.tag == "NextLevel") if (!isUsed) { isUsed = true; StartCoroutine(NextLevel(HallHit.transform)); }
 
                 if (HallHit.transform.tag == "ChooseLevel0") if (!isUsed) { isUsed = true; StartCoroutine(ChooseLevel(0)); }
                 if (HallHit.transform.tag == "ChooseLevel1") if (!isUsed) { isUsed = true; StartCoroutine(ChooseLevel(1)); }
@@ -77,10 +78,7 @@ public class StartUI : MonoBehaviour
                     }
                 }
 
-                if (HallHit.transform.tag == "Slider")
-                {
-                    _soundHandler.transform.position = HallHit.transform.position;
-                }
+                if (HallHit.transform.tag == "Slider") _soundHandler.transform.position = HallHit.transform.position;
             }
         }
         _phonSound.volume = _soundHandler.transform.localPosition.x + 1;
@@ -132,6 +130,39 @@ public class StartUI : MonoBehaviour
             yield return new WaitForSeconds(0.2f);
             plObject.DOMove(new Vector3(-1.3f, plObject.position.y, plObject.position.z), 0.5f);
             yield return new WaitForSeconds(0.1f);
+            
+            isUsed = false;
+        }
+    }
+
+    IEnumerator LastLevel()
+    {
+        while (isUsed)
+        {
+            yield return new WaitForSeconds(0.1f);
+            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z + 1), 0.3f);
+            yield return new WaitForSeconds(0.3f);
+            plObject.DOMove(new Vector3(plObject.transform.position.x - 2f, plObject.position.y, plObject.position.z), 0.8f);
+            _cam.transform.DOMove(new Vector3(_cam.transform.position.x - 2f, _cam.transform.position.y, _cam.transform.position.z), 0.8f);
+            yield return new WaitForSeconds(0.8f);
+            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z - 1), 0.3f);
+            yield return new WaitForSeconds(0.3f);
+            
+            isUsed = false;
+        }
+    }
+    IEnumerator NextLevel(Transform _nextLevel)
+    {
+        while (isUsed)
+        {
+            yield return new WaitForSeconds(0.1f);
+            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z + 1), 0.3f);
+            yield return new WaitForSeconds(0.3f);
+            plObject.DOMove(new Vector3(_nextLevel.transform.position.x + 0.35f, plObject.position.y, plObject.position.z ), 0.8f);
+            _cam.transform.DOMove(new Vector3(_cam.transform.position.x + 2f, _cam.transform.position.y, _cam.transform.position.z), 0.8f);
+            yield return new WaitForSeconds(0.8f);
+            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z - 1), 0.3f);
+            yield return new WaitForSeconds(0.3f);
             
             isUsed = false;
         }

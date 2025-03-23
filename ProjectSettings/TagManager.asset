@@ -25,6 +25,9 @@ TagManager:
   - ChooseLevel3
   - ChooseLevel4
   - ChooseLevel5
+  - Slider
+  - NextLevel
+  - LastLevel
   layers:
   - Default
   - TransparentFX
