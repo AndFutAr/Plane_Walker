@@ -7,9 +7,13 @@ public class StartUI : MonoBehaviour
 {
     private Camera _cam;
     private bool isUsed = false;
-
+    [SerializeField] private int thisLevel = 1, maxLevel = 1;
+    
     [SerializeField] private Transform plObject;
     [SerializeField] private Transform setBox, backBox;
+    [SerializeField] private Transform Levels;
+    [SerializeField] private Transform[] level;
+    [SerializeField] private GameObject[] levelText;
 
     [SerializeField] private AudioSource _phonSound;
     [SerializeField] private GameObject _soundHandler;
@@ -59,8 +63,8 @@ public class StartUI : MonoBehaviour
                         StartCoroutine(BackToMenu());
                     }
                 }
-                if(HallHit.transform.tag == "LastLevel") if (!isUsed) { isUsed = true; StartCoroutine(LastLevel()); }
-                if(HallHit.transform.tag == "NextLevel") if (!isUsed) { isUsed = true; StartCoroutine(NextLevel(HallHit.transform)); }
+                if(HallHit.transform.tag == "LastLevel") if (!isUsed && thisLevel > 1) { isUsed = true; StartCoroutine(LastLevel()); }
+                if(HallHit.transform.tag == "NextLevel") if (!isUsed && thisLevel < maxLevel) { isUsed = true; StartCoroutine(NextLevel()); }
 
                 if (HallHit.transform.tag == "ChooseLevel0") if (!isUsed) { isUsed = true; StartCoroutine(ChooseLevel(0)); }
                 if (HallHit.transform.tag == "ChooseLevel1") if (!isUsed) { isUsed = true; StartCoroutine(ChooseLevel(1)); }
@@ -139,31 +143,31 @@ public class StartUI : MonoBehaviour
     {
         while (isUsed)
         {
-            yield return new WaitForSeconds(0.1f);
-            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z + 1), 0.3f);
-            yield return new WaitForSeconds(0.3f);
-            plObject.DOMove(new Vector3(plObject.transform.position.x - 2f, plObject.position.y, plObject.position.z), 0.8f);
-            _cam.transform.DOMove(new Vector3(_cam.transform.position.x - 2f, _cam.transform.position.y, _cam.transform.position.z), 0.8f);
-            yield return new WaitForSeconds(0.8f);
-            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z - 1), 0.3f);
-            yield return new WaitForSeconds(0.3f);
-            
+            levelText[thisLevel - 1].SetActive(false);
+            level[thisLevel - 1].DOMove(new Vector3(4, 1, 1), 0.4f);
+            yield return new WaitForSeconds(0.4f);
+            Levels.DOMove(new Vector3(Levels.transform.position.x, Levels.transform.position.y - 1, Levels.transform.position.z), 0.6f);
+            yield return new WaitForSeconds(0.6f);
+            thisLevel--;
+            level[thisLevel - 1].DOMove(new Vector3(4, 1, 0), 0.4f);
+            yield return new WaitForSeconds(0.4f);
+            levelText[thisLevel - 1].SetActive(true);
             isUsed = false;
         }
     }
-    IEnumerator NextLevel(Transform _nextLevel)
+    IEnumerator NextLevel()
     {
         while (isUsed)
         {
-            yield return new WaitForSeconds(0.1f);
-            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z + 1), 0.3f);
-            yield return new WaitForSeconds(0.3f);
-            plObject.DOMove(new Vector3(_nextLevel.transform.position.x + 0.35f, plObject.position.y, plObject.position.z ), 0.8f);
-            _cam.transform.DOMove(new Vector3(_cam.transform.position.x + 2f, _cam.transform.position.y, _cam.transform.position.z), 0.8f);
-            yield return new WaitForSeconds(0.8f);
-            plObject.DOMove(new Vector3(plObject.transform.position.x, plObject.position.y, plObject.position.z - 1), 0.3f);
-            yield return new WaitForSeconds(0.3f);
-            
+            levelText[thisLevel - 1].SetActive(false);
+            level[thisLevel - 1].DOMove(new Vector3(4, 1, 1), 0.4f);
+            yield return new WaitForSeconds(0.4f);
+            Levels.DOMove(new Vector3(Levels.transform.position.x, Levels.transform.position.y + 1, Levels.transform.position.z), 0.6f);
+            yield return new WaitForSeconds(0.6f);
+            thisLevel++;
+            level[thisLevel - 1].DOMove(new Vector3(4, 1, 0), 0.4f);
+            yield return new WaitForSeconds(0.4f);
+            levelText[thisLevel - 1].SetActive(true);
             isUsed = false;
         }
     }
