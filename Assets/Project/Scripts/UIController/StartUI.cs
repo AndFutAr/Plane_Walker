@@ -18,6 +18,15 @@ public class StartUI : MonoBehaviour
     [SerializeField] private AudioSource _phonSound;
     [SerializeField] private GameObject _soundHandler;
 
+    void Awake()
+    {
+        if (PlayerPrefs.HasKey("volume"))
+        {
+            var pos = _soundHandler.transform.localPosition;
+            _soundHandler.transform.localPosition = new Vector3(PlayerPrefs.GetFloat("volume") - 1, pos.y, pos.z);
+        }
+        else _soundHandler.transform.localPosition = new Vector3(-0.5f, -1f, 0);
+    }
     void Start() => _cam = Camera.main;
 
     void Update()
@@ -198,6 +207,8 @@ public class StartUI : MonoBehaviour
             setBox.DOMove(new Vector3(setBox.position.x, 0, setBox.position.z), 0.5f);
             yield return new WaitForSeconds(0.5f);
             plObject.DOMove(new Vector3(-1.3f, plObject.position.y, plObject.position.z), 0.5f);
+            
+            PlayerPrefs.SetFloat("volume", _soundHandler.transform.localPosition.x + 1);
             isUsed = false;
         }
     }

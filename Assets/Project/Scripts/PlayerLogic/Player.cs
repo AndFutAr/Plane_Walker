@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
         if(!_walker.IsUsed()) _walker.CheckWay(_planer.DropRaycast());
 
         RaycastHit[] Hits;
-        Hits = Physics.RaycastAll(_camera.transform.position, _camera.transform.forward, 2.47f);
+        Hits = Physics.RaycastAll(_camera.transform.position, _camera.transform.forward, 2f);
         for (int i = 0; i < _boxes.Length; i++)
         {
             bool isAvai = true;

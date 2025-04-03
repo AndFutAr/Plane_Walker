@@ -282,7 +282,14 @@ PlayerSettings:
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
   AndroidAppBundleSizeToValidate: 150
-  m_BuildTargetIcons: []
+  m_BuildTargetIcons:
+  - m_BuildTarget: 
+    m_Icons:
+    - serializedVersion: 2
+      m_Icon: {fileID: 2800000, guid: b49f7c2064faf2a4787b713297b1a4cd, type: 3}
+      m_Width: 128
+      m_Height: 128
+      m_Kind: 0
   m_BuildTargetPlatformIcons:
   - m_BuildTarget: Android
     m_Icons:
@@ -449,7 +456,8 @@ PlayerSettings:
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   openGLRequireES32: 0
-  m_TemplateCustomTags: {}
+  m_TemplateCustomTags:
+    PRODUCT_DESCRIPTION: 
   mobileMTRendering:
     Android: 1
     iPhone: 1
@@ -750,7 +758,7 @@ PlayerSettings:
     Stadia: DOTWEEN
     Standalone: DOTWEEN
     VisionOS: DOTWEEN
-    WebGL: DOTWEEN;YandexGamesPlatform_yg;PLUGIN_YG_2;TMP_YG2;RU_YG2;NJSON_YG2
+    WebGL: DOTWEEN;YandexGamesPlatform_yg;PLUGIN_YG_2;TMP_YG2;RU_YG2;YG_PLUGIN_YANDEX_GAME
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN
     iPhone: DOTWEEN

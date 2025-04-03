@@ -3,7 +3,8 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.UI; 
+using YG;
 
 public class UI_menu : MonoBehaviour
 {
@@ -15,6 +16,16 @@ public class UI_menu : MonoBehaviour
     [SerializeField] private Slider audio_slider;
     [SerializeField] private GameObject SetMenu;
 
+    public YandexGame yg;
+
+    void Awake()
+    {
+        if (PlayerPrefs.HasKey("volume"))
+        {
+            audio_slider.value = PlayerPrefs.GetFloat("volume");
+        }
+        else audio_slider.value = 0.5f;
+    }
     void Start()
     {
         _OverMenu.SetActive(false);
@@ -74,10 +85,15 @@ public class UI_menu : MonoBehaviour
             _player.OnShield();
             Camera.main.transform.SetParent(player.transform);
             _OverMenu.SetActive(false);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
-    public void ExitGame() => SceneManager.LoadScene("StartScene");
 
+    public void ExitGame()
+    {
+        PlayerPrefs.SetFloat("volume", audio_slider.value);
+        SceneManager.LoadScene("StartScene");
+    }
     IEnumerator OpenSettings()
     {
         while (true)
@@ -98,6 +114,7 @@ public class UI_menu : MonoBehaviour
             SetMenu.transform.DOScale(new Vector3(0, 0, 0), 0.3f);
             yield return new WaitForSeconds(0.3f);
             SetMenu.SetActive(false);
+            PlayerPrefs.SetFloat("volume", audio_slider.value);
             isUsed = false;
             break;
         }

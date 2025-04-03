@@ -1,3 +1,0 @@
-Build path: C:/Users/infut/OneDrive/Рабочий стол/Build
-Build number: 1
-PluginYG version: 0
